@@ -1,7 +1,10 @@
-const { Telegraf } = require("telegraf");
-const TOKEN = "7091294846:AAE6GIm2_YsHjqjYBAWhe8hwIDRw5aa47Qs";
+const { Telegraf } = require('telegraf');
+
+// Token bot Telegram Anda
+const TOKEN = '7091294846:AAE6GIm2_YsHjqjYBAWhe8hwIDRw5aa47Qs';
 const bot = new Telegraf(TOKEN);
 
+// Link dan teks pesan
 const web_link = "https://apecomtest12.vercel.app";
 const community_link = "https://t.me/geto_spirit_announcement"; 
 const how_to_earn = `How to play Geto Spirit 🤑
@@ -22,12 +25,13 @@ Invite your friends and you’ll get bonuses. Help a friend move to the next lev
 At the end of the season, a token will be released and distributed among the players.
 Dates will be announced in our announcement channel. Stay tuned!`;
 
-
+// Menangani perintah /start
 bot.start((ctx) => {
   const startPayload = ctx.startPayload;
   const urlSent = `${web_link}?ref=${startPayload}`;
   const user = ctx.message.from;
   const userName = user.username ? `@${user.username}` : user.first_name;
+  
   ctx.replyWithMarkdown(`*Hey, ${userName}! Welcome to Geto Spirit!*
 Tap on the geto and see your balance rise.
 
@@ -36,19 +40,22 @@ Tap on the geto and see your balance rise.
 Got friends, relatives, co-workers?
 Bring them all into the game.
 More friends, more coins.`, {
-      reply_markup: {
-          inline_keyboard: [
-            [{ text: "👋 Play Geto!", web_app: { url: urlSent } }],
-            [{ text: "Join Community", url: community_link }],
-            [{ text: "How to earn?", callback_data: "how_to_earn" }]
-          ],
-      },
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "👋 Play Geto!", web_app: { url: urlSent } }],
+        [{ text: "Join Community", url: community_link }],
+        [{ text: "How to earn?", callback_data: "how_to_earn" }]
+      ],
+    },
   });
 });
 
+// Menangani aksi "how_to_earn"
 bot.action("how_to_earn", (ctx) => {
   ctx.reply(how_to_earn);
 });
 
-bot.launch();
-
+// Meluncurkan bot
+bot.launch()
+  .then(() => console.log('Bot is up and running'))
+  .catch(err => console.error('Failed to start bot', err));
